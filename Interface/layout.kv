@@ -1,0 +1,40 @@
+BoxLayout:
+    canvas:
+        Color:
+            rgb: .5,0,.5
+    orientation: 'vertical'
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: 'Upload From File'
+        Label:
+            text: 'Wilhelm Scream Gen 2.wav'
+        Image:
+            source: 'Images/Wilhelm Scream.png'
+        Button:
+            text: 'Generate'
+    GridLayout:
+        cols: 2
+        ChildButton:
+        ChildButton:
+        ChildButton:
+        ChildButton:
+        ChildButton:
+        ChildButton:
+    BoxLayout:
+        Button:
+            text: 'Generate From Selection'
+        Button:
+            text: 'Save/Export Selection'
+        Button:
+            text: 'Test Instrument'
+
+<ChildButton@Button>:                       #Inherits from button class
+    id: button_child
+    on_press: app.play_sound()
+    Image:
+        source: 'Images/Wilhelm Scream.png'
+        center_x: self.parent.center_x
+        center_y: self.parent.center_y
+
+        #on_press: root.play_sound()
