@@ -3,14 +3,6 @@ BoxLayout:
         Color:
             rgb: .5,0,.5
     orientation: 'vertical'
-    BoxLayout:
-        orientation: 'vertical'
-        Button:
-            text: 'Upload From File [NYI]'
-        Label:
-            text: 'Current Sound [NYI]'
-        Image:
-            source: 'Images/Wilhelm Scream.png'
     GridLayout:
         cols: 2
 		BoxLayout:
@@ -19,49 +11,49 @@ BoxLayout:
 				text: 'Sound 1'
 			BoxLayout:
 				PlayButton1:
-				GenerateButton1:
+				CheckBox1:
 		BoxLayout:
 			orientation: 'vertical'
 			Label:
 				text: 'Sound 2'
 			BoxLayout:
 				PlayButton2:
-				GenerateButton2:
+				CheckBox2:
 		BoxLayout:
 			orientation: 'vertical'
 			Label:
 				text: 'Sound 3'
 			BoxLayout:
 				PlayButton3:
-				GenerateButton3:
+				CheckBox3:
 		BoxLayout:
 			orientation: 'vertical'
 			Label:
 				text: 'Sound 4'
 			BoxLayout:
 				PlayButton4:
-				GenerateButton4:
+				CheckBox4:
 		BoxLayout:
 			orientation: 'vertical'
 			Label:
 				text: 'Sound 5'
 			BoxLayout:
 				PlayButton5:
-				GenerateButton5:
+				CheckBox5:
 		BoxLayout:
 			orientation: 'vertical'
 			Label:
 				text: 'Sound 6'
 			BoxLayout:
 				PlayButton6:
-				GenerateButton6:
+				CheckBox6:
     BoxLayout:
         Button:
-            text: 'Generate From Selection [NYI]'
+            text: 'Generate From Selection'
         Button:
-            text: 'Save/Export Selection [NYI]'
+            text: 'Save/Export Selection'
         Button:
-            text: 'Test Instrument [NYI]'
+            text: 'Test Instrument'
 
 <PlayButton1@Button>:                       #Inherits from button class
     id: play_button_child
@@ -71,19 +63,11 @@ BoxLayout:
         center_x: self.parent.center_x
         center_y: self.parent.center_y
 
-        #on_press: root.play_sound(0)
-		
-<GenerateButton1@Button>:                       #Inherits from button class
-    id: generate_button_child
-    on_press: app.newGeneration(0)
-    Label:
-        text: 'Generate'
-        center_x: self.parent.center_x
-        center_y: self.parent.center_y
+<CheckBox1@CheckBox>:
+    id: check_box
+    on_active: app.on_checkbox_active(self.active, 0)
 
-        #on_press: root.newGeneration(0)
-
-<PlayButton2@Button>:                       #Inherits from button class
+<PlayButton2@Button>:
     id: play_button_child
     on_press: app.play_sound(1)
     Label:
@@ -91,19 +75,11 @@ BoxLayout:
         center_x: self.parent.center_x
         center_y: self.parent.center_y
 
-        #on_press: root.play_sound(1)
-		
-<GenerateButton2@Button>:                       #Inherits from button class
-    id: generate_button_child
-    on_press: app.newGeneration(1)
-    Label:
-        text: 'Generate'
-        center_x: self.parent.center_x
-        center_y: self.parent.center_y
+<CheckBox2@CheckBox>:
+    id: check_box
+    on_active: app.on_checkbox_active(self.active, 1)
 
-        #on_press: root.newGeneration(1)
-
-<PlayButton3@Button>:                       #Inherits from button class
+<PlayButton3@Button>:
     id: play_button_child
     on_press: app.play_sound(2)
     Label:
@@ -111,19 +87,11 @@ BoxLayout:
         center_x: self.parent.center_x
         center_y: self.parent.center_y
 
-        #on_press: root.play_sound(2)
-		
-<GenerateButton3@Button>:                       #Inherits from button class
-    id: generate_button_child
-    on_press: app.newGeneration(2)
-    Label:
-        text: 'Generate'
-        center_x: self.parent.center_x
-        center_y: self.parent.center_y
+<CheckBox3@CheckBox>:
+    id: check_box
+    on_active: app.on_checkbox_active(self.active, 2)
 
-        #on_press: root.newGeneration(2)
-		
-<PlayButton4@Button>:                       #Inherits from button class
+<PlayButton4@Button>:
     id: play_button_child
     on_press: app.play_sound(3)
     Label:
@@ -131,19 +99,11 @@ BoxLayout:
         center_x: self.parent.center_x
         center_y: self.parent.center_y
 
-        #on_press: root.play_sound(3)
-		
-<GenerateButton4@Button>:                       #Inherits from button class
-    id: generate_button_child
-    on_press: app.newGeneration(3)
-    Label:
-        text: 'Generate'
-        center_x: self.parent.center_x
-        center_y: self.parent.center_y
+<CheckBox4@CheckBox>:
+    id: check_box
+    on_active: app.on_checkbox_active(self.active, 3)
 
-        #on_press: root.newGeneration(3)
-		
-<PlayButton5@Button>:                       #Inherits from button class
+<PlayButton5@Button>:
     id: play_button_child
     on_press: app.play_sound(4)
     Label:
@@ -151,19 +111,11 @@ BoxLayout:
         center_x: self.parent.center_x
         center_y: self.parent.center_y
 
-        #on_press: root.play_sound(4)
-		
-<GenerateButton5@Button>:                       #Inherits from button class
-    id: generate_button_child
-    on_press: app.newGeneration(4)
-    Label:
-        text: 'Generate'
-        center_x: self.parent.center_x
-        center_y: self.parent.center_y
+<CheckBox5@CheckBox>:
+    id: check_box
+    on_active: app.on_checkbox_active(self.active, 4)
 
-        #on_press: root.newGeneration(4)
-		
-<PlayButton6@Button>:                       #Inherits from button class
+<PlayButton6@Button>:
     id: play_button_child
     on_press: app.play_sound(5)
     Label:
@@ -171,14 +123,6 @@ BoxLayout:
         center_x: self.parent.center_x
         center_y: self.parent.center_y
 
-        #on_press: root.play_sound(5)
-		
-<GenerateButton6@Button>:                       #Inherits from button class
-    id: generate_button_child
-    on_press: app.newGeneration(5)
-    Label:
-        text: 'Generate'
-        center_x: self.parent.center_x
-        center_y: self.parent.center_y
-
-        #on_press: root.newGeneration(5)
+<CheckBox6@CheckBox>:
+    id: check_box
+    on_active: app.on_checkbox_active(self.active, 5)

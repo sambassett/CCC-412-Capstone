@@ -4,13 +4,6 @@ from kivy.core.audio import SoundLoader
 from CustomSound import *
 import copy
 
-#def WidgetScreen():
-#    layout = BoxLayout()
-#    btn = Button(text='Hello World')
-#    btn2 = Button(text='Goodbye World')
-#    layout.add_widget(btn)
-#    layout.add_widget(ButtonUpload())
-#    return layout
 
 class MyApp(App):
     title = 'Instrument Generation'
@@ -52,6 +45,16 @@ class MyApp(App):
             print("Sound " + str(i + 1) + ":")
             newSoundsList[i].mutateSelf()
         self.soundsList = newSoundsList
+
+    def on_checkbox_active(self, value, index):
+        if value:
+            # add index to breeding list
+            # remove print when done, used for debugging
+            print("The checkbox is active because value={}".format(value))
+        else:
+            # remove index from breeding list
+            # remove print when done, used for debugging
+            print("The checkbox is inactive because value={}".format(value))
 
 if __name__ == '__main__':
     MyApp().run()
