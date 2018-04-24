@@ -11,6 +11,7 @@
   <li>pygame</li>
   <li>DEAP></li>
   <li>panddoc</li>
+  <li>pip install https://github.com/AndreMiras/pycaw/archive/master.zip</li>
 </ul>
 
 <h4>Parameters?:</h4>
