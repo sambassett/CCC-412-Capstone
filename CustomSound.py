@@ -83,17 +83,17 @@ class CustomBlit(CustomSound):
         return self
 
     def mutate(self):
-        self.blit.freq = checkMutate(self.blit.freq, mutatePitch(self.blit.freq), 40, "Pitch")
+        self.blit.freq = checkMutate(self.blit.freq, mutatePitch(self.blit.freq), 25, "Pitch")
 
-        newFreq = checkMutate(self.sine.freq, mutateFreq(self.sine.freq), 15, "Sine Freq")
-        newRange = checkMutate((self.sine.add - self.sine.mul, self.sine.add + self.sine.mul), mutateRange(self.sine.mul, self.sine.add), 15, "Sine Range")
+        newFreq = checkMutate(self.sine.freq, mutateFreq(self.sine.freq), 25, "Sine Freq")
+        newRange = checkMutate((self.sine.add - self.sine.mul, self.sine.add + self.sine.mul), mutateRange(self.sine.mul, self.sine.add), 25, "Sine Range")
         self.sine = Sine(freq = newFreq).range(newRange[0], newRange[1])
         self.blit.harms = self.sine
 
-        self.adsr.attack = checkMutate(self.adsr.attack, mutateAttackOrDecay(self.adsr.attack), 15, "Attack")
-        self.adsr.decay = checkMutate(self.adsr.decay, mutateAttackOrDecay(self.adsr.decay), 15, "Decay")
-        self.adsr.sustain = checkMutate(self.adsr.sustain, mutateSustain(self.adsr.sustain), 15, "Sustain")
-        self.adsr.release = checkMutate(self.adsr.release, mutateRelease(self.adsr.release), 15, "Release")
+        self.adsr.attack = checkMutate(self.adsr.attack, mutateAttackOrDecay(self.adsr.attack), 25, "Attack")
+        self.adsr.decay = checkMutate(self.adsr.decay, mutateAttackOrDecay(self.adsr.decay), 25, "Decay")
+        self.adsr.sustain = checkMutate(self.adsr.sustain, mutateSustain(self.adsr.sustain), 25, "Sustain")
+        self.adsr.release = checkMutate(self.adsr.release, mutateRelease(self.adsr.release), 25, "Release")
         self.blit.mul = self.adsr
 
     def mutateCopy(self):
