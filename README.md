@@ -6,7 +6,7 @@
 <ul>
 <li><a href="https://sourceforge.net/projects/winpython/files/WinPython_3.6/3.6.3.0/WinPython-32bit-3.6.3.0Qt5.exe/download">32 bit Python (yes, it HAS to be 32 bit. OS/IDE can be whatever, but the python interpreter must be 32 bit)</a></li>
   <li><a href="http://ajaxsoundstudio.com/downloads/pyo_0.8.9_py3.6_setup.exe">pyo (must manually add the install path to the project's environment)</a></li>
-  <li><a href="https://www.wxpython.org/pages/downloads/">wxpython (optional, for ui)</a></li>
+  <li><a href="https://www.wxpython.org/pages/downloads/">wxpython </a></li>
   <li>pygame</li>
   <li>https://kivy.org/docs/installation/installation-windows.html (follow the instructions!)</li>
   <li>pycaw: pip install https://github.com/AndreMiras/pycaw/archive/master.zip</li>
