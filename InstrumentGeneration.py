@@ -1,3 +1,8 @@
+import pygame.midi
+import pygame.key
+import pygame.mixer
+import pygame.mouse
+import pygame.midi
 from kivy.properties import StringProperty, BooleanProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
@@ -7,9 +12,6 @@ import KivyLayout
 from SystemVolume import SystemVolume
 from CustomSound import *
 from GetHWNDs import win32gui, get_hwnds
-import pygame.key
-import pygame.mixer
-import pygame.mouse
 
 Builder.load_string(KivyLayout.getLayout())
 
@@ -34,7 +36,7 @@ class RootWidget(FloatLayout):
 
 class InstrumentGeneration(App):
     title = 'Instrument Generation'
-    server = Server().boot().start()
+    server = Server(winhost = 'directsound', duplex = 0, midi = 'jack').boot().start()
     systemVolume = SystemVolume()
     pygame = pygame
 
@@ -45,6 +47,9 @@ class InstrumentGeneration(App):
         os.makedirs(documentsPath)
     if not os.path.exists(desktopPath):
         os.makedirs(desktopPath)
+
+    baseHz = 16.35
+    aConst = 1.059463094359
 
     pyoSounds = []
     soundsToRecord = []
@@ -60,9 +65,8 @@ class InstrumentGeneration(App):
     playSound = mainSound.getSound()
 
     def build(self):
-        rootWidget = RootWidget()
         #rootWidget.changeSelectionLabel("No sounds are selected.")
-        return rootWidget
+        return RootWidget()
 
     def updateNotificationLabelWithClear(self, text, timer):
         if self.root is not None:
@@ -123,17 +127,15 @@ class InstrumentGeneration(App):
         self.updateNotificationLabelWithClear("Save complete.", 8)
         self.systemVolume.setSystemVolume(saveVolume)
 
+    # If the same sound as before is being played (no generations between, same position), don't re-record
     def recordSoundsForPlayback(self):
-        self.soundsToRecord = []
-        self.soundRecords = []
+        self.soundsToRecord = [None] * 108
+        self.soundRecords = [None] * 108
 
-        for i in range(0, 4):
-            self.soundsToRecord.append(copy.deepcopy(self.mainSound))
-
-        self.soundsToRecord[0].blit.freq = 261.63
-        self.soundsToRecord[1].blit.freq = 293.66
-        self.soundsToRecord[2].blit.freq = 329.63
-        self.soundsToRecord[3].blit.freq = 349.23
+        for i in range(0, 108):
+            self.soundsToRecord[i] = copy.deepcopy(self.mainSound)
+            self.soundsToRecord[i].blit.freq = (self.baseHz * (self.aConst**(i)))
+            print(str(self.soundsToRecord[i].blit.freq))
 
         for i in range(0, len(self.soundsToRecord)):
             print("Rec " + str(i))
@@ -144,14 +146,12 @@ class InstrumentGeneration(App):
 
         saveVolume = self.systemVolume.getSystemVolume()
         self.systemVolume.setSystemVolume(-60.0)
-        clean = Clean_objects(4, self.soundRecords[0], self.soundRecords[1], self.soundRecords[2], self.soundRecords[3])
 
-        clean.start()
+        for i in range(0, len(self.soundRecords)):
+            clean = Clean_objects(4, self.soundRecords[i])
+            clean.start()
 
-        start = dt.now()
-        while True:
-            if (dt.now() - start).total_seconds() >= 4:
-                break
+        time.sleep(4)
 
         self.systemVolume.setSystemVolume(saveVolume)
         self.pygame.init()
@@ -191,6 +191,36 @@ class InstrumentGeneration(App):
                     self.playableSounds[3].play()
         self.clearNotificationLabel(0)
         return
+
+    def beginMidiKeyboardPlayback(self, unusedTimer):
+        pygame.init()
+        pygame.midi.init()
+
+        midiIn = pygame.midi.Input(1)
+
+        keyboardPlaying = True
+        while keyboardPlaying:
+            for event in self.pygame.event.get():
+                if (event.type == self.pygame.KEYDOWN and event.key == self.pygame.K_ESCAPE) or (event.type == self.pygame.MOUSEBUTTONUP):
+                    self.pygame.quit()
+                    keyboardPlaying = False
+
+            if midiIn.poll():
+                for press in midiIn.read(1000):
+                    print("press")
+                    noteDown = (press[0][0] == 144)
+                    noteVal = press[0][1]
+                    print(noteVal)
+                    # Sanitize input better!! THe modulation does weird stuff
+                    if noteVal >= 0 and noteVal <= 107 and noteDown:
+                        self.playableSounds[noteVal].play()
+                    elif noteVal >= 0 and noteVal <= 107 and not noteDown:
+                        self.playableSounds[noteVal].fadeout(1250)
+            pygame.time.wait(20)
+
+        self.clearNotificationLabel(0)
+        return
+
     def testInstrument(self):
         self.setPygameHWND()
 
@@ -198,7 +228,7 @@ class InstrumentGeneration(App):
 
         print("About to start keyboard input.")
         self.updateNotificationLabelWithoutClear("Piano ready! Click anywhere or press ESC to leave piano mode.")
-        Clock.schedule_once(self.beginKeyboardPlayback, 1/10)
+        Clock.schedule_once(self.beginMidiKeyboardPlayback, 1/10)
 
     def randomizeSounds(self):
         for i in range(0, len(self.pyoSounds)):
@@ -244,7 +274,7 @@ class InstrumentGeneration(App):
         self.soundsSelected[index] = value
         #self.updateSelectionLabel()
 
-        print(str(index) + " checkbox pressed.")
+        print("Checkbox " + str(index) + "  pressed.")
 
         if self.root is not None:
             if True in self.soundsSelected:
